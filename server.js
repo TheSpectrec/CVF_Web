@@ -1,27 +1,62 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 require('dotenv').config();
+const express = require('express');
+const mysql = require('mysql2');
+const cors = require('cors');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.use(cors());
+app.use(express.json());
 
-// Middlewares
-app.use(bodyParser.json());
-app.use(cors({
-    origin: '*'
-}));
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'root',
+    database: 'cvf_integradora'
+});
 
+connection.connect(err => {
+    if (err) {
+        console.error('Error de conexión a la base de datos:', err);
+        return;
+    }
+    console.log('Conectado a la base de datos.');
+});
 
-// Database Connection
-const db = require('./config/db');
+// Ruta de Login
+app.post('/users/login', (req, res) => {
+    const { username, password } = req.body;
 
-// Import Routes
-const userRoutes = require('./routes/user.routes');
+    const query = 'SELECT * FROM usuarios WHERE username = ?';
+    connection.query(query, [username], async (err, results) => {
+        if (err) return res.status(500).json({ error: 'Error en el servidor' });
+        if (results.length === 0) return res.status(401).json({ error: 'Usuario no encontrado' });
 
-// Use Routes
-app.use('/users', userRoutes);
+        const user = results[0];
 
-// Start Server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+        // 🔹 Si las contraseñas están en texto plano (sin encriptar):
+        if (!user.password.startsWith('$2b$')) {
+            if (password !== user.password) {
+                return res.status(401).json({ error: 'Contraseña incorrecta' });
+            }
+        } else {
+            // 🔹 Si las contraseñas están encriptadas con bcrypt:
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if (!isPasswordValid) {
+                return res.status(401).json({ error: 'Contraseña incorrecta' });
+            }
+        }
+
+        // Generar un token JWT
+        const token = jwt.sign({ userId: user.id, isAdmin: user.isAdmin }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        res.json({ token, isAdmin: user.isAdmin });
+    });
+});
+
+// Iniciar el servidor
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});

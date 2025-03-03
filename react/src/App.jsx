@@ -1,7 +1,7 @@
-import Header from "./components/Header";
-import LoginForm from "./components/LoginForm";
+import Header from "./components/login/Header";
+import LoginForm from "./components/login/LoginForm";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Login.css";
+import "./components/login/Login.css";
 
 function App() {
   return (
