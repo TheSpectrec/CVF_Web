@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #EDEDED;
+}
+.logoutBtn {
+    background: #6B6B6B;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+}
