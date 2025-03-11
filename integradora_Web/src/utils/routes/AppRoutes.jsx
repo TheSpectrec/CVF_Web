@@ -1,6 +1,6 @@
 
 // Bootstrap
-import 'bootstrap/dist/css/bootstrap.min.css'
+import '../../styles/bootstrap.min.css'
 
 // Pages
 import Login from '../../pages/Login';
