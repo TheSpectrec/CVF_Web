@@ -42,6 +42,9 @@ public class House {
     @Column(name = "preferences")
     private String preferences;
 
+    @Column(name = "enabled")
+    private boolean enabled; // ✅ Agregado campo booleano para eliminación lógica
+
     @OneToOne(mappedBy = "house_id")
     private User user;
 

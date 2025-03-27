@@ -1,18 +1,22 @@
 package mx.edu.utez.cvf.service;
 
-import java.util.List;
-
 import mx.edu.utez.cvf.entity.User;
+import java.util.List;
 
 public interface UserService {
 
+    // Obtener todos los usuarios
     List<User> listUsers();
 
+    // Buscar usuario por ID
     User findById(String id);
 
+    // Guardar o actualizar un usuario
     Boolean saveUser(User user);
 
-    Boolean updateUser(User user);
+    // Eliminar lógicamente (desactivar)
+    Boolean deleteUser(String id); // usado para desactivación
 
-    Boolean deleteUser(String id);
+    // Si prefieres claridad, puedes declarar también este alias:
+    // Boolean disableUser(String id);
 }

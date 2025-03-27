@@ -54,8 +54,7 @@ public class User {
     private Date birthday;
 
     @Column(name = "enabled", nullable = false)
-    private Boolean enabled;
-
+    private Boolean enabled = true;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "house_id", referencedColumnName = "house_id")
     private House house_id;
