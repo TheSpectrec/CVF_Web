@@ -2,6 +2,7 @@ package mx.edu.utez.cvf.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +16,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+
 
 @Entity
 @Table(name = "houses")
@@ -45,7 +48,8 @@ public class House {
     @Column(name = "enabled")
     private boolean enabled; // ✅ Agregado campo booleano para eliminación lógica
 
-    @OneToOne(mappedBy = "house_id")
+    @OneToOne(mappedBy = "house")
+    @JsonManagedReference
     private User user;
 
     @OneToMany(mappedBy = "house_id")

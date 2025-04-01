@@ -44,6 +44,12 @@ public class UserServiceImpl implements UserService {
                 System.out.println("⚠️ Rol no encontrado: " + nombreRol);
                 return false;
             }
+
+            // ✅ Validación: solo residentes pueden tener casa
+            if (!"ROLE_RESIDENTE".equalsIgnoreCase(nombreRol) && user.getHouse() != null) {
+                System.out.println("❌ Solo los usuarios con rol RESIDENTE pueden tener una casa asignada.");
+                return false;
+            }
         }
 
         // Activar por defecto si es nuevo

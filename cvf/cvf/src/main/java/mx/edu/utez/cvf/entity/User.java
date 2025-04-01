@@ -57,7 +57,7 @@ public class User {
     private Boolean enabled = true;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "house_id", referencedColumnName = "house_id")
-    private House house_id;
+    private House house;
 
     @ManyToMany
     @JoinTable(name = "authorities", joinColumns = @JoinColumn(name = "username"), inverseJoinColumns = @JoinColumn(name = "authority"))
